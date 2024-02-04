@@ -1,7 +1,7 @@
 # Cloud Native Web Application
 CSYE 6225
 
-## Assignment 1
+### Assignment 1
 Start Spring Boot application  
 
 ```
@@ -12,7 +12,7 @@ curl -vvvv http://localhost:8080/healthz
 ```
 curl -vvvv -XPUT http://localhost:8080/healthz
 ```  
-(expected: return 405 method not allowed)  
+(expected: returns 405 method not allowed)  
 
 ```
 net stop postgresql-x64-16
