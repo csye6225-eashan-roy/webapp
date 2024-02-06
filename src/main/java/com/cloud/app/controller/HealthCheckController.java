@@ -5,10 +5,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -50,5 +49,20 @@ public class HealthCheckController {
                     .header("X-Content-Type-Options","nosniff")
                     .build();
         }
+    }
+    // Other health endpoint methods returning 405 Method Not Allowed
+    @RequestMapping(
+            path = "/healthz",
+            method = {RequestMethod.POST, RequestMethod.PUT,
+                    RequestMethod.DELETE, RequestMethod.HEAD,
+                    RequestMethod.OPTIONS, RequestMethod.PATCH},
+            produces = "application/json"
+    )
+    public ResponseEntity<?> methodNotAllowed() {
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
+                .header("Cache-control","no-cache, no-store, must-revalidate")
+                .header("Pragma","no-cache")
+                .header("X-Content-Type-Options","nosniff")
+                .build();
     }
 }
