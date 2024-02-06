@@ -33,7 +33,7 @@ jobs:
       - name: Run tests
         run: mvn test # Run your tests
         env:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/users
-          SPRING_DATASOURCE_USERNAME: db-user
-          SPRING_DATASOURCE_PASSWORD: 12345
-          SPRING_JPA_HIBERNATE_DDL_AUTO: update
+          SPRING_DATASOURCE_URL: "jdbc:postgresql://localhost:5432/users"
+          SPRING_DATASOURCE_USERNAME: "db-user"
+          SPRING_DATASOURCE_PASSWORD: "@ccess4d-b"
+          SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
