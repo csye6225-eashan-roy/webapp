@@ -6,12 +6,15 @@ import com.cloud.app.service.HealthCheckService;
 import com.cloud.app.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Map;
 
@@ -27,7 +30,7 @@ public class UserController {
 
     // User creation
     @PostMapping("/user")
-    public ResponseEntity<?> createUser(@RequestBody User user) {
+    public ResponseEntity<?> createUser(@Validated @RequestBody User user) {
 
         try {
             UserDTO userDTO = new UserDTO();
@@ -36,7 +39,10 @@ public class UserController {
             userDTO.setFirstName(user.getFirstName());
             User createdUser = userService.createUser(userDTO.toEntity(), user.getPassword());
             return ResponseEntity.status(HttpStatus.CREATED).body(UserDTO.fromEntity(createdUser));
-        } catch (Exception e) {
+        } catch (DataAccessResourceFailureException e){
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
+        }
+        catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -70,7 +76,7 @@ public class UserController {
 
     // Current user can update their information
     @PutMapping("/user/self")
-    public ResponseEntity<?> updateUserInformation(@AuthenticationPrincipal UserDetails currentUser, @RequestBody User user) {
+    public ResponseEntity<?> updateUserInformation(@AuthenticationPrincipal UserDetails currentUser, @Validated @RequestBody User user) {
         try {
 //            if (!healthCheckService.isDatabaseRunning()) {
 //                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();

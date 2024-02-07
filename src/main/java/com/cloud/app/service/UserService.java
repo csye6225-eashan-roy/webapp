@@ -2,10 +2,12 @@ package com.cloud.app.service;
 
 import com.cloud.app.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.cloud.app.entity.User;
 
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Optional;
 
