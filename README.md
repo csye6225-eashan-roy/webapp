@@ -46,7 +46,6 @@ curl -vvvv http://localhost:8081/healthz
 Notes:
 - Decreased the time it takes to recognize a non-operational database to 5 secs via HikariCP
 
-### Assignment 2  
 - Bootstrapping the Database  
 
 -- Automated Database Setup: Leveraging the CommandLineRunner interface, our application is equipped to automatically establish a database along with a designated user endowed with the necessary privileges. This setup ensures that, in the event of an unexpected deletion, the database is seamlessly regenerated without manual intervention.  
@@ -125,4 +124,4 @@ Responses:
 - GitHub actions CI Pipeline  
 
 -- Wrote a GitHub Actions workflow in yml to run simple check (compile code) for each pull request raised.   
-A pull request can only be merged if the workflow executes successfully.
+-- A pull request can only be merged if the workflow executes successfully.
