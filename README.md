@@ -44,7 +44,9 @@ curl -vvvv http://localhost:8081/healthz
 [expected: 200 status ok]
 
 Notes:
-- Decreased the time it takes to recognize a non-operational database to 5 secs via HikariCP
+- Decreased the time it takes to recognize a non-operational database to 5 secs via HikariCP  
+
+### Assignment 2  
 
 - Bootstrapping the Database  
 
