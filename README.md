@@ -46,4 +46,5 @@ curl -vvvv http://localhost:8081/healthz
 Notes:
 - Decreased the time it takes to recognize a non-operational database to 5 secs via HikariCP
 
-### Assignment 2
+### Assignment 2  
+-
