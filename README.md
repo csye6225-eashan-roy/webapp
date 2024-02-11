@@ -144,6 +144,3 @@ Responses:
 -- Makes maven point to JDK 17 instead of the default mapping to JDK 11  
 
 -- Builds and runs the Spring Boot application
-
-=======
-###########################################################################
