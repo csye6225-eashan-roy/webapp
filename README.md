@@ -128,7 +128,6 @@ Responses:
 -- Wrote a GitHub Actions workflow in yml to run simple check (compile code) for each pull request raised.   
 -- A pull request can only be merged if the workflow executes successfully.  
 
-<<<<<<< HEAD
 
 - Bash script to demo assignment-2 in a centos vm  
 
