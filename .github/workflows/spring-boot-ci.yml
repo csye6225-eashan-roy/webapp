@@ -38,5 +38,5 @@ jobs:
           SPRING_DATASOURCE_PASSWORD: "@ccess4d-b"
           SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
 
-      - name: Build failure
-        run: exit 1
+#      - name: Build failure
+#        run: exit 1
