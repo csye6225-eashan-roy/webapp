@@ -67,7 +67,7 @@ Request Body:
 {
   "first_name": "Jane",
   "last_name": "Doe",
-  "password": "skdjfhskdfjhg",
+  "password": "skdjfhskdfjhg@1A",
   "username": "jane.doe@example.com"
 }
 ```
@@ -128,6 +128,19 @@ Responses:
 -- Wrote a GitHub Actions workflow in yml to run simple check (compile code) for each pull request raised.   
 -- A pull request can only be merged if the workflow executes successfully.  
 
-###########################################################################
+- Bash script to demo assignment-2 in a centos vm  
 
--- Created bash script for demo
+-- The script installs necessary packages like unzip, JDK, maven, postgresql in the vm      
+
+-- Unzips the project folder, creates directory 'resources' under webapp/src/main, and places application.properties file inside it    
+
+-- Initializes and starts PostgreSQL  
+
+-- Configures PostgreSQL  
+
+-- Configures md5 authentication in pg_hba.conf  
+
+-- Makes maven point to JDK 17 instead of the default mapping to JDK 11  
+
+-- Builds and runs the Spring Boot application
+
