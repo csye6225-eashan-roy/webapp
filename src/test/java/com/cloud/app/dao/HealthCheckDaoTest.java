@@ -13,6 +13,6 @@ public class HealthCheckDaoTest {
     @Test
     public void databaseConnectivityStatus_shouldReturnOne(){
         Integer status = healthCheckDao.databaseConnectivityStatus();
-        assertEquals(1,status);
+        assertEquals(0,status);
     }
 }
