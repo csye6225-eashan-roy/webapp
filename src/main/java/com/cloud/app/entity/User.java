@@ -35,8 +35,8 @@ public class User {
     @NotBlank(message = "Last name cannot be empty")
     private String lastName;
 
-    @Column(nullable = false, unique = true)
-    @NotBlank(message = "Username cannot be empty")
+    @Column(unique = true)
+//    @NotBlank(message = "Username cannot be empty")
     private String username;
 
     @Column(nullable = false)
@@ -46,11 +46,11 @@ public class User {
             message = "Password must contain at least one digit, one lowercase letter, one uppercase letter, and one special character")
     private String password;
 
-    @Column(name = "account_created", nullable = false)
+    @Column(name = "account_created")
     @JsonProperty("account_created")
     private Instant accountCreated;
 
-    @Column(name = "account_updated", nullable = false)
+    @Column(name = "account_updated")
     @JsonProperty("account_updated")
     private Instant accountUpdated;
 }
