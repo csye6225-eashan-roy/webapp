@@ -37,6 +37,8 @@ public class UserController {
             userDTO.setUsername(user.getUsername());
             userDTO.setLastName(user.getLastName());
             userDTO.setFirstName(user.getFirstName());
+            userDTO.setAccountCreated(user.getAccountCreated());
+            userDTO.setAccountUpdated(user.getAccountUpdated());
             User createdUser = userService.createUser(userDTO.toEntity(), user.getPassword());
             return ResponseEntity.status(HttpStatus.CREATED).body(UserDTO.fromEntity(createdUser));
         } catch (DataAccessResourceFailureException e){

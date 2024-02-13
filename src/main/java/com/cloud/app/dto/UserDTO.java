@@ -41,6 +41,8 @@ public class UserDTO {
         user.setFirstName(this.getFirstName());
         user.setLastName(this.getLastName());
         user.setUsername(this.getUsername());
+        user.setAccountCreated(this.getAccountCreated());
+        user.setAccountUpdated(this.getAccountUpdated());
         return user;
     }
 }

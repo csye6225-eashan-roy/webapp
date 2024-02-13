@@ -20,14 +20,28 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     public User createUser(User user, String unencodedPassword) {
+
+        // Checks if username is provided
+        if (user.getUsername() == null || user.getUsername().isEmpty()) {
+            throw new IllegalArgumentException("Username must be provided");
+        }
+
         // Checks if user is already present. If yes, throw exception.
         if (userDao.findByUsername(user.getUsername()).isPresent()) {
             throw new IllegalArgumentException("A user with the given username already exists");
         }
+
+        // Prevent client from setting accountCreated and accountUpdated
+        if (user.getAccountCreated() != null || user.getAccountUpdated() != null) {
+            throw new IllegalArgumentException("Cannot set account created or updated time");
+        }
+
         // Encode the password before saving
         user.setPassword(passwordEncoder.encode(unencodedPassword));
+
         user.setAccountCreated(Instant.now());
         user.setAccountUpdated(Instant.now());
+
         return userDao.save(user);
     }
 
