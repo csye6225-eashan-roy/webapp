@@ -38,5 +38,9 @@ jobs:
           SPRING_DATASOURCE_PASSWORD: "@ccess4d-b"
           SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
 
+      - name: Check if user exists in the database
+        run: |
+          PGPASSWORD='@ccess4d-b' psql -h localhost -U \"db-user\" -d users -c "SELECT * FROM users WHERE username='test-user2@example.com';"
+
 #      - name: Build failure
 #        run: exit 1
