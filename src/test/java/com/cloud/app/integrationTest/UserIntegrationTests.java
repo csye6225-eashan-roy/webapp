@@ -1,17 +1,21 @@
 package com.cloud.app.integrationTest;
 
 import com.cloud.app.entity.User;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.*;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestMethodOrder(OrderAnnotation.class) // This applies test method ordering for the whole class
 //selects a random port to conduct actual http calls for testing
 public class UserIntegrationTests {
 
@@ -29,6 +33,7 @@ public class UserIntegrationTests {
     }
 
     @Test
+    @Order(1)
     public void testCreateAndGetUser() {
         // Objective: Creating a user via POST and retrieving it via GET
 
@@ -55,6 +60,7 @@ public class UserIntegrationTests {
     }
 
     @Test
+    @Order(2)
     public void testUpdateUser() {
         // Updating a user via PUT and validating the update via GET
 
