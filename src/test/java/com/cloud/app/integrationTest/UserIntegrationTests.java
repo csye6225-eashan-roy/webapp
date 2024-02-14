@@ -35,7 +35,7 @@ public class UserIntegrationTests {
         User user = new User();
         user.setFirstName("Test");
         user.setLastName("User");
-        user.setUsername("test-user2@example.com");
+        user.setUsername("test-user@example.com");
         user.setPassword("Password123!@");
 
         // Create user
@@ -65,7 +65,7 @@ public class UserIntegrationTests {
         User user = new User();
         user.setFirstName("Test");
         user.setLastName("User");
-        user.setUsername("test-user2@example.com");
+        user.setUsername("test-user1@example.com");
         user.setPassword("Password123!@");
 
         ResponseEntity<User> postResponse = restTemplate.postForEntity(getRootUrl() + "/user", user, User.class);
