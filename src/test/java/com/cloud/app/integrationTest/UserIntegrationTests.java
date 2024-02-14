@@ -32,7 +32,7 @@ public class UserIntegrationTests {
     public void testCreateAndGetUser() {
         // Objective: Creating a user via POST and retrieving it via GET
 
-        User user = new User(); // Assuming a constructor without ID (auto-generated)
+        User user = new User();
         user.setFirstName("Test");
         user.setLastName("User");
         user.setUsername("test-user2@example.com");
@@ -59,11 +59,23 @@ public class UserIntegrationTests {
         // Updating a user via PUT and validating the update via GET
 
         // Using the same username and password that were used to create the user in testCreateAndGetUser()
-        String username = "test-user2@example.com";
-        String password = "Password123!@";
+//        String username = "test-user2@example.com";
+//        String password = "Password123!@";
+
+        User user = new User();
+        user.setFirstName("Test");
+        user.setLastName("User");
+        user.setUsername("test-user2@example.com");
+        user.setPassword("Password123!@");
+
+        ResponseEntity<User> postResponse = restTemplate.postForEntity(getRootUrl() + "/user", user, User.class);
+        assertThat(postResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        User createdUser = postResponse.getBody();
+
+        restTemplate = restTemplate.withBasicAuth(user.getUsername(), "Password123!@");
 
         // Configuring restTemplate with Basic Auth for the user created in testCreateAndGetUser()
-        restTemplate = restTemplate.withBasicAuth(username, password);
+//        restTemplate = restTemplate.withBasicAuth(username, password);
 
         // Retrieving the user using authenticated GET request
         ResponseEntity<User> getResponse = restTemplate.getForEntity(getRootUrl() + "/user/self", User.class);
@@ -72,7 +84,7 @@ public class UserIntegrationTests {
 
         // Ensuring that we have retrieved a user before proceeding
         assertThat(userToUpdate).isNotNull();
-        assertThat(userToUpdate.getUsername()).isEqualTo(username);
+        assertThat(userToUpdate.getUsername()).isEqualTo(user.getUsername());
 
         // Updating the user's details
         userToUpdate.setLastName("user - updated");
