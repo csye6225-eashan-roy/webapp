@@ -145,7 +145,7 @@ Responses:
 
 -- Builds and runs the Spring Boot application  
 
-### Assignment 2
+### Assignment 3
 
 - Added Integration tests  
 
@@ -153,4 +153,8 @@ Responses:
 -- Test 2 - Updated the account and using the GET call, validated the account was updated 
 
 
-- Added GitHub secrets to encrypt sensitive information in CI workflow
+- Added GitHub secrets to encrypt sensitive information in CI workflow  
+
+-- Created secrets in organization repo  
+-- Enabled 'Run workflows from fork pull requests' and 'Send secrets and variables to workflows from fork pull requests' in order to give access of secrets to fork repo  
+-- Accessed the secrets in workflow file through ${{ secrets.VARIABLE_NAME }}  
