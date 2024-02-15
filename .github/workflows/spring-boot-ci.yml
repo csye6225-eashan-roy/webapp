@@ -26,6 +26,7 @@ jobs:
           sudo -u postgres psql -c "CREATE DATABASE users;"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
           sudo -u postgres psql -c "CREATE USER ${{ secrets.DATABASE_USER }} WITH ENCRYPTED PASSWORD '${{ secrets.DATABASE_PASSWORD }}';"
           sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE users TO ${{ secrets.DATABASE_USER }};"
 =======
@@ -36,6 +37,10 @@ jobs:
           sudo -u postgres psql -c "CREATE USER '${{ secrets.DATABASE_USER }}' WITH ENCRYPTED PASSWORD '${{ secrets.DATABASE_PASSWORD }}';"
           sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE users TO '${{ secrets.DATABASE_USER }}';"
 >>>>>>> 017431a (updated workflow with github secrets)
+=======
+          sudo -u postgres psql -c "CREATE USER ${{ secrets.DATABASE_USER }} WITH ENCRYPTED PASSWORD ${{ secrets.DATABASE_PASSWORD }};"
+          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE users TO ${{ secrets.DATABASE_USER }};"
+>>>>>>> 63f8ca8 (updated workflow with github secrets)
 
       - name: Build with Maven
         run: mvn clean install -DskipTests # Compile the code and install dependencies without running tests
