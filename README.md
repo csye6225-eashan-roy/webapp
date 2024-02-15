@@ -144,3 +144,13 @@ Responses:
 -- Makes maven point to JDK 17 instead of the default mapping to JDK 11  
 
 -- Builds and runs the Spring Boot application  
+
+### Assignment 2
+
+- Added Integration tests  
+
+-- Test 1 - Created an account, and using the GET call, validated account exists  
+-- Test 2 - Updated the account and using the GET call, validated the account was updated 
+
+
+- Added GitHub secrets to encrypt sensitive information in CI workflow
