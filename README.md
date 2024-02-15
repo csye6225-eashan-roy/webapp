@@ -153,4 +153,4 @@ Responses:
 -- Test 2 - Updated the account and using the GET call, validated the account was updated 
 
 
-- Added GitHub secrets to encrypt sensitive information in CI workflow.
+- Added GitHub secrets to encrypt sensitive information in CI workflow
