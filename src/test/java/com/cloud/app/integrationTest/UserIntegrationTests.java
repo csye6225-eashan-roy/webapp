@@ -15,9 +15,11 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestMethodOrder(OrderAnnotation.class) // This applies test method ordering for the whole class
 //selects a random port to conduct actual http calls for testing
-public class UserIntegrationTests {
+@TestMethodOrder(OrderAnnotation.class)
+// This applies test method ordering for the whole class
+public class
+UserIntegrationTests {
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -48,7 +50,7 @@ public class UserIntegrationTests {
         assertThat(postResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         User createdUser = postResponse.getBody();
 
-        // Assuming the username and password are for basic auth, not directly stored in the User entity as clear text.
+        // Using username and password for basic auth
         restTemplate = restTemplate.withBasicAuth(user.getUsername(), "Password123!@");
 
         // Retrieve user
@@ -88,6 +90,7 @@ public class UserIntegrationTests {
         userToUpdate.setAccountCreated(null);
         userToUpdate.setAccountUpdated(null);
         userToUpdate.setUsername(null);
+
         // Prepare the request for updating the user
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
