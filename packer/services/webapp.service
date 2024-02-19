@@ -1,0 +1,18 @@
+[Unit]
+Description=CSYE6225 Web Application
+After=network.target
+
+[Service]
+User=csye6225
+Group=csye6225
+WorkingDirectory=/opt/webapp
+ExecStart=/usr/bin/java -jar /opt/webapp/application.jar
+SuccessExitStatus=143
+Restart=always
+RestartSec=5
+StandardOutput=journal+console
+StandardError=journal+console
+SyslogIdentifier=csye6225App
+
+[Install]
+WantedBy=multi-user.target
