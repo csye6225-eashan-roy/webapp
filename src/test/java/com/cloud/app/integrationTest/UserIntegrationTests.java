@@ -15,6 +15,7 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//adding comment for demo
 //selects a random port to conduct actual http calls for testing
 @TestMethodOrder(OrderAnnotation.class)
 // This applies test method ordering for the whole class
