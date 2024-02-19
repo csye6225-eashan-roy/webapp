@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Packer variables
+packer/template/dev.pkrvar.hcl
+
 ### STS ###
 .apt_generated
 .classpath
