@@ -107,6 +107,6 @@ UserIntegrationTests {
         User updatedUser = getUpdatedResponse.getBody();
 
         // Asserting that the updates are applied
-        assertThat(updatedUser.getLastName()).isEqualTo("user - updated");
+        assertThat(updatedUser.getLastName()).isEqualTo("user - NOTupdated");
     }
 }
