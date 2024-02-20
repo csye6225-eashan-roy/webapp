@@ -26,3 +26,5 @@ jobs:
         run: |
           chmod +x packer/scripts/packer-format-validate.sh
           packer/scripts/packer-format-validate.sh
+        env:
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
