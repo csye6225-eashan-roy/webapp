@@ -28,3 +28,5 @@ jobs:
           packer/scripts/packer-format-validate.sh
         env:
           PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          DATABASE_USER: ${{ secrets.DATABASE_USER }}
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}

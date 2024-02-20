@@ -27,6 +27,8 @@ packer validate \
   -var "source_image_family=centos-stream-8" \
   -var "zone=us-central1-a" \
   -var "vpc_network=default" \
+  -var "database_user=${{ DATABASE_USER }}" \
+  -var "database_password=${{ DATABASE_PASSWORD }}" \
   packer/template/webapp-gcp-custom-image.pkr.hcl
 
 echo "Packer template validation completed successfully. Proceeding with the build..."
