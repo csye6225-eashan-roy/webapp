@@ -59,16 +59,17 @@ jobs:
       - name: Build Custom Image with Packer
         run: |
           packer build \
-            -var "project_id=$PROJECT_ID" \
+            -var "project_id=${{ secrets.GCP_PROJECT_ID }}" \
             -var "zone=$DEPLOYMENT_ZONE" \
             -var "vpc_network=$VPC_NETWORK" \
             -var "source_image_family=$SOURCE_IMAGE_FAMILY" \
             -var "image_family=$IMAGE_FAMILY" \
             -var "ssh_username=$SSH_USERNAME" \
             -var "vm_size=$MACHINE_TYPE" \
+            -var "database_user=${{ secrets.DATABASE_USER }}" \
+            -var "database_password=${{ secrets.DATABASE_PASSWORD }}" \
             packer/template/webapp-gcp-custom-image.pkr.hcl
           env:
-            PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
             DEPLOYMENT_ZONE: 'us-central1-a'
             VPC_NETWORK: 'default'
             SOURCE_IMAGE_FAMILY: 'ubuntu-2004-lts'

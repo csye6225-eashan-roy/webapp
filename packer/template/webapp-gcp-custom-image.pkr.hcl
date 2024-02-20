@@ -35,6 +35,14 @@ variable "vpc_network" {
   type = string
 }
 
+variable "database_user" {
+  type    = string
+}
+
+variable "database_password" {
+  type    = string
+}
+
 source "googlecompute" "webapp-image" {
   project_id           = var.project_id
   source_image_family  = var.source_image_family
@@ -57,9 +65,13 @@ build {
 
   provisioner "shell" {
     name = "updates OS, installs dependencies"
-    scripts = [
+    script = [
 #      "../scripts/os-update.sh",
       "packer/scripts/install-dependencies-and-setup.sh"
+    ]
+    environment_vars = [
+      "DATABASE_USER=${var.database_user}",
+      "DATABASE_PASSWORD=${var.database_password}"
     ]
   }
 
