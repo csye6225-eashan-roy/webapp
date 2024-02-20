@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build_packer_image:
+  packer_build_image:
     runs-on: ubuntu-latest
 
     steps:

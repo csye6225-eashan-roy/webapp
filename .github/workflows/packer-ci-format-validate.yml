@@ -5,9 +5,8 @@ on:
     branches: [main] # CI gets triggered on pull requests to the main branch
 
 jobs:
-  build_image:
+  packer-format-validate:
     runs-on: ubuntu-latest
-    environment: dev
 
     steps:
       - name: Checkout code
