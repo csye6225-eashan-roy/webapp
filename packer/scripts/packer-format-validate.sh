@@ -20,7 +20,7 @@ fi
 
 echo "Validating Packer templates..."
 packer validate \
-  -var "is_build_workflow=false" \
+  -var "jar_file=dummy.jar" \
   -var "project_id=${PROJECT_ID}" \
   -var "ssh_username=packer" \
   -var "vm_size=e2-small" \

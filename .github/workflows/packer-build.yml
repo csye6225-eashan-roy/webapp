@@ -59,7 +59,7 @@ jobs:
       - name: Build Custom Image with Packer
         run: |
           packer build \
-            -var "is_build_workflow=true" \
+            -var "jar_file=target/app-0.0.1-SNAPSHOT.jar" \
             -var "project_id=${{ secrets.GCP_PROJECT_ID }}" \
             -var "zone=$DEPLOYMENT_ZONE" \
             -var "vpc_network=$VPC_NETWORK" \
