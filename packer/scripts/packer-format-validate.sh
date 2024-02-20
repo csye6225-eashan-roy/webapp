@@ -19,6 +19,14 @@ if [[ -n "$GCLOUD_CREDENTIALS" ]]; then
 fi
 
 echo "Validating Packer templates..."
-packer validate -var-file="packer/template/dev.pkrvar.hcl" packer/template/webapp-gcp-custom-image.pkr.hcl
+packer validate \
+  -var "project_id=${PROJECT_ID}" \
+  -var "ssh_username=packer" \
+  -var "vm_size=e2-small" \
+  -var "image_family=custom-centos-8-image-webapp" \
+  -var "source_image_family=centos-stream-8" \
+  -var "zone=us-central1-a" \
+  -var "vpc_network=default" \
+  packer/template/webapp-gcp-custom-image.pkr.hcl
 
 echo "Packer template validation completed successfully. Proceeding with the build..."
