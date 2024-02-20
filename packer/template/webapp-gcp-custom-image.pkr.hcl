@@ -9,7 +9,7 @@ packer {
 
 variable "jar_file" {
   type    = string
-  default = "dummy.jar" # This is the name of the placeholder file
+  default = "packer/template/dummy.jar" # This is the name of the placeholder file
 }
 
 variable "project_id" {
