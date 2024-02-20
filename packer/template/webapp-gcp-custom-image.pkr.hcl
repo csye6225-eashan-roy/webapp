@@ -36,26 +36,26 @@ variable "vpc_network" {
 }
 
 variable "database_user" {
-  type    = string
+  type = string
 }
 
 variable "database_password" {
-  type    = string
+  type = string
 }
 
 source "googlecompute" "webapp-image" {
-  project_id           = var.project_id
-  source_image_family  = var.source_image_family
-  zone                 = var.zone
-  machine_type         = var.vm_size
-  ssh_username         = var.ssh_username
-#  ssh_timeout          = "20m"
-  image_name           = "webapp-gcp-packer-image-${formatdate("YYYYMMDDHHmmss", timestamp())}"
-  image_family         = var.image_family
-#  use_internal_ip      = true
-#  wait_to_add_ssh_keys = "20s"
-  network              = var.vpc_network
-  tags                 = ["ssh-tag", "http-tag", "https-tag"]
+  project_id          = var.project_id
+  source_image_family = var.source_image_family
+  zone                = var.zone
+  machine_type        = var.vm_size
+  ssh_username        = var.ssh_username
+  #  ssh_timeout          = "20m"
+  image_name   = "webapp-gcp-packer-image-${formatdate("YYYYMMDDHHmmss", timestamp())}"
+  image_family = var.image_family
+  #  use_internal_ip      = true
+  #  wait_to_add_ssh_keys = "20s"
+  network = var.vpc_network
+  tags    = ["ssh-tag", "http-tag", "https-tag"]
 }
 
 build {
@@ -66,7 +66,7 @@ build {
   provisioner "shell" {
     name = "updates OS, installs dependencies"
     script = [
-#      "../scripts/os-update.sh",
+      #      "../scripts/os-update.sh",
       "packer/scripts/install-dependencies-and-setup.sh"
     ]
     environment_vars = [
@@ -93,7 +93,7 @@ build {
     name        = "copies systemd service file to Packer image"
     source      = "packer/services/webapp.service"
     destination = "/tmp/webapp.service"
-#    destination = "/etc/systemd/system/webapp.service"   --permission denied issue
+    #    destination = "/etc/systemd/system/webapp.service"   --permission denied issue
   }
 
   provisioner "shell" {
