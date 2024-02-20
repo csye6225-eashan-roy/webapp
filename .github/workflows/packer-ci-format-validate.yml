@@ -1,0 +1,27 @@
+name: CI for building image
+
+on:
+  pull_request:
+    branches: [main] # CI gets triggered on pull requests to the main branch
+
+jobs:
+  build_image:
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Google Cloud credentials
+        run: echo "$GCLOUD_CREDENTIALS" > /tmp/credentials.json
+        env:
+          GCLOUD_CREDENTIALS: ${{ secrets.GCLOUD_CREDENTIALS }}
+
+      - name: Set up Packer
+        uses: hashicorp/setup-packer@main
+        with:
+          version: latest
+
+      - name: Init, Format and Validate
+        run: packer/scripts/packer-format-validate.sh
