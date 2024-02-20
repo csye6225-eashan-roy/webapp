@@ -23,4 +23,6 @@ jobs:
           version: latest
 
       - name: Init, Format and Validate
-        run: packer/scripts/packer-format-validate.sh
+        run: |
+          chmod +x packer/scripts/packer-format-validate.sh
+          packer/scripts/packer-format-validate.sh
