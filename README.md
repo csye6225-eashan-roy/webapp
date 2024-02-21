@@ -158,3 +158,5 @@ Responses:
 -- Created secrets in organization repo  
 -- Enabled 'Run workflows from fork pull requests' and 'Send secrets and variables to workflows from fork pull requests' in order to give access of secrets to fork repo  
 -- Accessed the secrets in workflow file through ${{ secrets.VARIABLE_NAME }}  
+
+### Assignment 4
