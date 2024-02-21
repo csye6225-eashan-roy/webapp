@@ -45,7 +45,7 @@ jobs:
           GCLOUD_CREDENTIALS: ${{ secrets.GCLOUD_CREDENTIALS }}
 
       - name: Set up Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@master
+        uses: google-github-actions/auth@v2
         with:
           service_account_key: ${{ secrets.GCLOUD_CREDENTIALS }}
           project_id: ${{ secrets.GCP_PROJECT_ID }}
