@@ -55,6 +55,9 @@ jobs:
         with:
           version: latest
 
+      - name: Initialize Packer
+        run: packer init packer/template/webapp-gcp-custom-image.pkr.hcl
+
       - name: Build Custom Image with Packer
         run: |
           packer build \
