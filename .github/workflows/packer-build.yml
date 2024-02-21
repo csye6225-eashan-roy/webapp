@@ -40,16 +40,15 @@ jobs:
           SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
 
       - name: Set up Google Cloud credentials
-        run: echo "$GCLOUD_CREDENTIALS" > /tmp/credentials.json
+        run: echo -e "$GCLOUD_CREDENTIALS" > /tmp/credentials.json
         env:
           GCLOUD_CREDENTIALS: ${{ secrets.GCLOUD_CREDENTIALS }}
 
       - name: Set up Google Cloud SDK
         uses: google-github-actions/auth@v2
         with:
-          service_account_key: ${{ secrets.GCLOUD_CREDENTIALS }}
+          credentials_json: ${{ secrets.GCLOUD_CREDENTIALS }}
           project_id: ${{ secrets.GCP_PROJECT_ID }}
-          export_default_credentials: true
 
       - name: Set up Packer
         uses: hashicorp/setup-packer@main
@@ -71,6 +70,7 @@ jobs:
             -var "database_password=${{ secrets.DATABASE_PASSWORD }}" \
             packer/template/webapp-gcp-custom-image.pkr.hcl
           env:
+            GOOGLE_APPLICATION_CREDENTIALS: /tmp/credentials.json
             DEPLOYMENT_ZONE: 'us-central1-a'
             VPC_NETWORK: 'default'
             SOURCE_IMAGE_FAMILY: 'ubuntu-2004-lts'
