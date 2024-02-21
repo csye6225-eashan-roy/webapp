@@ -96,7 +96,7 @@ build {
   }
 
   provisioner "shell" {
-    name = "disables selinux"
+    name   = "disables selinux"
     script = "packer/scripts/disable_selinux.sh"
   }
 
