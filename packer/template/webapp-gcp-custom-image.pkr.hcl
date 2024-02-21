@@ -46,7 +46,7 @@ variable "database_user" {
 }
 
 variable "database_password" {
-  type     = string
+  type    = string
   default = "access4db"
 }
 
