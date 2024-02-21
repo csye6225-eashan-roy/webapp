@@ -95,6 +95,11 @@ build {
     ]
   }
 
+  provisioner "shell" {
+    name = "disables selinux"
+    script = "packer/scripts/disable_selinux.sh"
+  }
+
   provisioner "file" {
     name        = "copies systemd service file to Packer image"
     source      = "packer/services/webapp.service"
