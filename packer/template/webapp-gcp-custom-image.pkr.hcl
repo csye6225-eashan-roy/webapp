@@ -41,11 +41,13 @@ variable "vpc_network" {
 }
 
 variable "database_user" {
-  type = string
+  type    = string
+  default = "dbuser"
 }
 
 variable "database_password" {
-  type = string
+  type     = string
+  default = "access4db"
 }
 
 source "googlecompute" "webapp-image" {
@@ -111,6 +113,10 @@ build {
     inline = [
       "sudo mv /tmp/webapp.service /etc/systemd/system/webapp.service",
       "sudo systemctl daemon-reload",
+      "echo \"Check logs\"",
+      "journalctl -u webapp.service",
+      "/usr/bin/java --version",
+      "/usr/bin/java -jar /opt/webapp/application.jar",
       "sudo systemctl enable webapp.service"
     ]
   }
