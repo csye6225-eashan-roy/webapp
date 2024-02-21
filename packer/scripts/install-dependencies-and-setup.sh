@@ -21,5 +21,12 @@ sudo su - postgres -c "psql -U postgres -c \"ALTER DATABASE users OWNER TO \\\"$
 sudo sed -i "s/ident/md5/g" /var/lib/pgsql/data/pg_hba.conf
 sudo systemctl reload postgresql
 
-# Export Java home (adjust the path to match your system's Java installation)
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-17.0.6.0.10-3.el9.x86_64
+# Set Java 17 as the default version
+sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-17.0.6.0.9-0.3.ea.el8.x86_64/bin/java
+
+# Set JAVA_HOME for all users
+echo 'export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-17.0.6.0.9-0.3.ea.el8.x86_64' | sudo tee /etc/profile.d/jdk17.sh
+
+# Add JAVA_HOME to PATH
+echo 'export PATH=$JAVA_HOME/bin:$PATH' | sudo tee -a /etc/profile.d/jdk17.sh
+
