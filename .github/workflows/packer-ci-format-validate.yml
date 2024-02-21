@@ -1,4 +1,4 @@
-name: CI for building image
+name: CI for validating image
 
 on:
   pull_request:
