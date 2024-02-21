@@ -113,11 +113,9 @@ build {
     inline = [
       "sudo mv /tmp/webapp.service /etc/systemd/system/webapp.service",
       "sudo systemctl daemon-reload",
+      "sudo systemctl enable webapp.service",
       "echo \"Check logs\"",
-      "journalctl -u webapp.service",
-      "/usr/bin/java --version",
-      "/usr/bin/java -jar /opt/webapp/application.jar",
-      "sudo systemctl enable webapp.service"
+      "journalctl -u webapp.service"
     ]
   }
 
