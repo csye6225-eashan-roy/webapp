@@ -76,10 +76,10 @@ build {
       #      "../scripts/os-update.sh",
       "packer/scripts/install-dependencies-and-setup.sh"
     ]
-#    environment_vars = [
-#      "DATABASE_USER=${var.database_user}",
-#      "DATABASE_PASSWORD=${var.database_password}"
-#    ]
+    #    environment_vars = [
+    #      "DATABASE_USER=${var.database_user}",
+    #      "DATABASE_PASSWORD=${var.database_password}"
+    #    ]
   }
 
   provisioner "file" {
@@ -103,7 +103,7 @@ build {
   }
 
   provisioner "shell" {
-    name   = "creates empty application.properties file"
+    name = "creates empty application.properties file"
     inline = [
       "sudo cp src/main/resources/application.properties /opt/webapp",
       "sudo chown -R csye6225:csye6225 /opt/webapp/application.properties"
