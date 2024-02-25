@@ -6,8 +6,7 @@ After=network.target
 User=csye6225
 Group=csye6225
 WorkingDirectory=/opt/webapp
-EnvironmentFile=/opt/webapp/application.properties
-ExecStart=/usr/bin/java -jar /opt/webapp/application.jar
+ExecStart=/usr/bin/java -jar /opt/webapp/application.jar --spring.config.location=file:/opt/webapp/application.properties
 SuccessExitStatus=143
 Restart=always
 RestartSec=5
