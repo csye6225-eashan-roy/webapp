@@ -76,10 +76,10 @@ build {
       #      "../scripts/os-update.sh",
       "packer/scripts/install-dependencies-and-setup.sh"
     ]
-    environment_vars = [
-      "DATABASE_USER=${var.database_user}",
-      "DATABASE_PASSWORD=${var.database_password}"
-    ]
+    #    environment_vars = [
+    #      "DATABASE_USER=${var.database_user}",
+    #      "DATABASE_PASSWORD=${var.database_password}"
+    #    ]
   }
 
   provisioner "file" {
@@ -102,6 +102,14 @@ build {
     script = "packer/scripts/disable_selinux.sh"
   }
 
+  provisioner "shell" {
+    name = "creates empty application.properties file"
+    inline = [
+      "sudo touch /opt/webapp/application.properties",
+      "sudo chown -R csye6225:csye6225 /opt/webapp/application.properties"
+    ]
+  }
+
   provisioner "file" {
     name        = "copies systemd service file to Packer image"
     source      = "packer/services/webapp.service"
@@ -113,7 +121,6 @@ build {
     inline = [
       "sudo mv /tmp/webapp.service /etc/systemd/system/webapp.service",
       "sudo systemctl daemon-reload",
-      "sudo systemctl enable webapp.service",
       "echo \"Check logs\"",
       "journalctl -u webapp.service"
     ]
