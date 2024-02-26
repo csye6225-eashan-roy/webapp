@@ -3,7 +3,7 @@ set -e
 # Install java, maven, postgres
 sudo dnf install java-17-openjdk-devel -y
 sudo dnf install maven -y
-sudo dnf module enable postgresql:14 -y
+sudo dnf module enable postgresql:16 -y
 sudo dnf install postgresql-server -y
 
 # Initialize and start PostgreSQL
