@@ -15,7 +15,7 @@
 
     <!-- File appender -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>C:\\Users\\HP\\Desktop\\CSYE 6225 Cloud\\GitHub\\webapp.log</file>
+        <file>/var/log/webapp/webapp.log</file>
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
                 <timestamp/>
