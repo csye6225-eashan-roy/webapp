@@ -9,9 +9,14 @@ logging:
     webapp_processor:
       type: parse_json
       time_key: "@timestamp"
-      time_format: "%Y-%m-%dT%H:%M:%S.%L%Z"
+      time_format: "%Y-%m-%dT%H:%M:%S.%LZ"
+    change_severity:
+      type: modify_fields
+      fields:
+        severity:
+          copy_from: jsonPayload.level
   service:
     pipelines:
       default_pipeline:
         receivers: [webapp_file]
-        processors: [webapp_processor]
+        processors: [webapp_processor, change_severity]
