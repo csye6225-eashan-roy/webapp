@@ -14,11 +14,15 @@ public class HealthCheckService {
     private final Logger LOGGER = LoggerFactory.getLogger(HealthCheckService.class);
     public boolean isDatabaseRunning() {
         try{
-            if(healthCheckDao.databaseConnectivityStatus() == 1)
+            LOGGER.info("Checking database connectivity...");
+            if(healthCheckDao.databaseConnectivityStatus() == 1) {
+                LOGGER.info("Database connectivity check successful.");
                 return true;
+            }
         } catch(Exception e) {
-            LOGGER.error("Error while checking your postgresql database connectivity");
+            LOGGER.error("Exception occurred while checking database connectivity: {}", e.getMessage());
         }
+        LOGGER.warn("Database connectivity check failed.");
         return false;
     }
 }

@@ -5,6 +5,8 @@ import com.cloud.app.entity.User;
 import com.cloud.app.service.HealthCheckService;
 import com.cloud.app.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.http.HttpStatus;
@@ -13,9 +15,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.SQLException;
-import java.time.Instant;
 import java.util.Map;
 
 @RestController
@@ -28,9 +27,11 @@ public class UserController {
     @Autowired
     private HealthCheckService healthCheckService;
 
+    private final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     // User creation
     @PostMapping("/user")
     public ResponseEntity<?> createUser(@Validated @RequestBody User user) {
+        LOGGER.info("Request received to create user: {}", user.getUsername());
 
         try {
             UserDTO userDTO = new UserDTO();
@@ -40,11 +41,15 @@ public class UserController {
             userDTO.setAccountCreated(user.getAccountCreated());
             userDTO.setAccountUpdated(user.getAccountUpdated());
             User createdUser = userService.createUser(userDTO.toEntity(), user.getPassword());
+            LOGGER.info("User successfully created: {}", userDTO.getUsername());
             return ResponseEntity.status(HttpStatus.CREATED).body(UserDTO.fromEntity(createdUser));
+
         } catch (DataAccessResourceFailureException e){
+            LOGGER.error("Database service unavailable. Error: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
         }
         catch (Exception e) {
+            LOGGER.error("Error creating user '{}': {}", user.getUsername(), e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -54,12 +59,14 @@ public class UserController {
     public ResponseEntity<?> getUserInfo(@AuthenticationPrincipal UserDetails currentUser,
                                          HttpServletRequest payload,
                                          @RequestParam Map<String,String> queryParams) {
+        LOGGER.info("Request received to retrieve user info for: {}", currentUser.getUsername());
 
 //        if (!healthCheckService.isDatabaseRunning()) {
 //            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
 //        }
 
         if(payload.getContentLength()>0 || !queryParams.isEmpty()){
+            LOGGER.warn("Bad request for user info retrieval: {}, with payload or query parameters present", currentUser.getUsername());
             return ResponseEntity
                     .badRequest()
                     .header("Cache-control","no-cache, no-store, must-revalidate")
@@ -70,8 +77,10 @@ public class UserController {
 
         User user = userService.findByUserName(currentUser.getUsername());
         if (user != null) {
+            LOGGER.info("User info successfully retrieved for: {}", currentUser.getUsername());
             return ResponseEntity.ok(UserDTO.fromEntity(user));
         } else {
+            LOGGER.warn("User not found for username: {}", currentUser.getUsername());
             return ResponseEntity.notFound().build();
         }
     }
@@ -79,14 +88,17 @@ public class UserController {
     // Current user can update their information
     @PutMapping("/user/self")
     public ResponseEntity<?> updateUserInformation(@AuthenticationPrincipal UserDetails currentUser, @Validated @RequestBody User user) {
+        LOGGER.info("Request received to update user info for: {}", currentUser.getUsername());
         try {
 //            if (!healthCheckService.isDatabaseRunning()) {
 //                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
 //            }
-
             User updatedUser = userService.updateUser(currentUser.getUsername(), user);
+            LOGGER.info("User information successfully updated for: {}", currentUser.getUsername());
             return ResponseEntity.noContent().build(); // 204 No Content
+
         } catch (Exception e) {
+            LOGGER.error("Error updating user '{}': {}", currentUser.getUsername(), e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage()); // 400 Bad Request
         }
     }
