@@ -147,7 +147,7 @@ build {
 
   provisioner "shell" {
     inline = [
-      "sudo mv /tmp/ops-agent-config.yml /etc/google-cloud-ops-agent/config.yml",
+      "sudo mv /tmp/ops-agent-config.yml /etc/google-cloud-ops-agent/config.yaml",
       "sudo systemctl enable google-cloud-ops-agent.service",
       "sudo systemctl start google-cloud-ops-agent.service"
     ]
