@@ -96,6 +96,14 @@ build {
       "packer/scripts/create-system-user-group.sh"
     ]
   }
+  provisioner "shell" {
+    name   = "Create log directory and set ownership so that application can write logs to it"
+    inline = [
+      "sudo mkdir -p /var/log/webapp",
+      "sudo chown -R csye6225:csye6225 /var/log/webapp",
+      "sudo chmod -R 755 /var/log/webapp"
+    ]
+  }
 
   provisioner "shell" {
     name   = "disables selinux"
@@ -126,6 +134,25 @@ build {
       "journalctl -u webapp.service"
     ]
   }
+  provisioner "shell" {
+    name   = "Install Ops Agent for collecting VM logs and sending them to GCP"
+    script = "packer/scripts/install-ops-agent.sh"
+  }
+
+  provisioner "file" {
+    name        = "Copy Ops Agent Config File to Packer image"
+    source      = "packer/configs/ops-agent-config.yml"
+    destination = "/tmp/ops-agent-config.yml"
+  }
+
+  provisioner "shell" {
+    inline = [
+      "sudo mv /tmp/ops-agent-config.yml /etc/google-cloud-ops-agent/config.yml",
+      "sudo systemctl enable google-cloud-ops-agent.service",
+      "sudo systemctl start google-cloud-ops-agent.service"
+    ]
+  }
+
 
 }
 

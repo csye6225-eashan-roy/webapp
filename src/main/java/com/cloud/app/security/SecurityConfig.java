@@ -26,11 +26,13 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+        log.info("Configuring password encoder");
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        log.info("Configuring security filter chain");
         http
                 // Apply CSRF protection selectively or disable if necessary
                 .csrf(AbstractHttpConfigurer::disable)
@@ -57,7 +59,7 @@ public class SecurityConfig {
                             }
                         })
                 );
-
+        log.info("Security filter chain configured successfully");
         return http.build();
     }
 }
