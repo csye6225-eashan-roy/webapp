@@ -27,6 +27,13 @@ jobs:
           sudo -u postgres psql -c "CREATE USER ${{ secrets.DATABASE_USER }} WITH ENCRYPTED PASSWORD '${{ secrets.DATABASE_PASSWORD }}';"
           sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE users TO ${{ secrets.DATABASE_USER }};"
 
+      - name: Create log directory
+        run: |
+          sudo mkdir -p /var/log/webapp
+          sudo touch /var/log/webapp/webapp.log
+          sudo chmod -R 777 /var/log/webapp
+          sudo chmod 666 /var/log/webapp/webapp.log
+
       - name: Build with Maven
         run: mvn clean install -DskipTests # Compile the code and install dependencies without running tests
 
