@@ -97,7 +97,7 @@ build {
     ]
   }
   provisioner "shell" {
-    name   = "Create log directory and set ownership so that application can write logs to it"
+    name = "Create log directory and set ownership so that application can write logs to it"
     inline = [
       "sudo mkdir -p /var/log/webapp",
       "sudo chown -R csye6225:csye6225 /var/log/webapp",
