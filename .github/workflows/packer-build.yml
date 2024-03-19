@@ -35,7 +35,7 @@ jobs:
         run: |
           sudo mkdir -p /var/log/webapp
           sudo touch /var/log/webapp/webapp.log
-          sudo chmod -R 777 /var/log/webapp
+          sudo chmod -R 766 /var/log/webapp
           sudo chmod 666 /var/log/webapp/webapp.log
 
       - name: Build with Maven
