@@ -17,6 +17,7 @@ public class handle404 {
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity handleNoHandlerFoundException(NoHandlerFoundException ex, WebRequest request) {
         LOGGER.warn("404 Not Found: {}", request.getDescription(false));
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("There was an unexpected error (type=Not Found, status=404).");
     }
 }
