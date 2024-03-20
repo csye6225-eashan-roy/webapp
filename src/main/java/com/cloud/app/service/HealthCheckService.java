@@ -14,7 +14,7 @@ public class HealthCheckService {
     private final Logger LOGGER = LoggerFactory.getLogger(HealthCheckService.class);
     public boolean isDatabaseRunning() {
         try{
-            LOGGER.info("Checking database connectivity...");
+            LOGGER.debug("Checking database connectivity...");
             if(healthCheckDao.databaseConnectivityStatus() == 1) {
                 LOGGER.info("Database connectivity check successful.");
                 return true;
