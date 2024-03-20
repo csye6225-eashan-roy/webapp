@@ -33,7 +33,7 @@ public class HealthCheckController {
                     .header("X-Content-Type-Options","nosniff")
                     .build();
         }
-
+        LOGGER.debug("Checking if database is running...");
         //200 Status Ok if database connectivity is successful
         if (healthCheckService.isDatabaseRunning()){
             LOGGER.info("Database is running");

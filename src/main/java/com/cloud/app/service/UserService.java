@@ -21,7 +21,7 @@ public class UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     public User createUser(User user, String unencodedPassword) {
-        LOGGER.info("Creating new user with username: {}", user.getUsername());
+        LOGGER.debug("Creating new user with username: {}", user.getUsername());
 
         // Checks if username is provided
         if (user.getUsername() == null || user.getUsername().isEmpty()) {
@@ -53,7 +53,7 @@ public class UserService {
     public User findByUserName(String username) {
         // Fetch and return the user by username
 
-        LOGGER.info("Fetching user with username: {}", username);
+        LOGGER.debug("Fetching user with username: {}", username);
         Optional<User> user = userDao.findByUsername(username);
 
         //return user.orElse(null);
@@ -70,7 +70,7 @@ public class UserService {
     public User updateUser(String username, User userUpdateInfo) {
         // Find the existing user by username
 
-        LOGGER.info("Updating user information for username: {}", username);
+        LOGGER.debug("Updating user information for username: {}", username);
 
         User existingUser = userDao.findByUsername(username)
                 .orElseThrow(() -> {

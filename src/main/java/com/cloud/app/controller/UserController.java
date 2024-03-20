@@ -34,6 +34,7 @@ public class UserController {
         LOGGER.info("Request received to create user: {}", user.getUsername());
 
         try {
+            LOGGER.debug("Proceeding to create user...");
             UserDTO userDTO = new UserDTO();
             userDTO.setUsername(user.getUsername());
             userDTO.setLastName(user.getLastName());
@@ -41,7 +42,7 @@ public class UserController {
             userDTO.setAccountCreated(user.getAccountCreated());
             userDTO.setAccountUpdated(user.getAccountUpdated());
             User createdUser = userService.createUser(userDTO.toEntity(), user.getPassword());
-            LOGGER.info("User successfully created: {}", userDTO.getUsername());
+            LOGGER.debug("User successfully created: {}", userDTO.getUsername());
             return ResponseEntity.status(HttpStatus.CREATED).body(UserDTO.fromEntity(createdUser));
 
         } catch (DataAccessResourceFailureException e){
@@ -61,10 +62,6 @@ public class UserController {
                                          @RequestParam Map<String,String> queryParams) {
         LOGGER.info("Request received to retrieve user info for: {}", currentUser.getUsername());
 
-//        if (!healthCheckService.isDatabaseRunning()) {
-//            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
-//        }
-
         if(payload.getContentLength()>0 || !queryParams.isEmpty()){
             LOGGER.warn("Bad request for user info retrieval: {}, with payload or query parameters present", currentUser.getUsername());
             return ResponseEntity
@@ -76,6 +73,7 @@ public class UserController {
         }
 
         User user = userService.findByUserName(currentUser.getUsername());
+        LOGGER.debug("Proceeding to get user info...");
         if (user != null) {
             LOGGER.info("User info successfully retrieved for: {}", currentUser.getUsername());
             return ResponseEntity.ok(UserDTO.fromEntity(user));
@@ -90,9 +88,7 @@ public class UserController {
     public ResponseEntity<?> updateUserInformation(@AuthenticationPrincipal UserDetails currentUser, @Validated @RequestBody User user) {
         LOGGER.info("Request received to update user info for: {}", currentUser.getUsername());
         try {
-//            if (!healthCheckService.isDatabaseRunning()) {
-//                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
-//            }
+            LOGGER.debug("Proceeding to update user info...");
             User updatedUser = userService.updateUser(currentUser.getUsername(), user);
             LOGGER.info("User information successfully updated for: {}", currentUser.getUsername());
             return ResponseEntity.noContent().build(); // 204 No Content
