@@ -242,4 +242,4 @@ dig NS eashanroy.me
 
 -- Updated web application to write Structured Logs in JSON (used SLF4J with Logback)  
 -- Created logback config file to use this directory '/var/log/webapp/webapp.log' to write logs  
--- All application log data is streamed to Google Cloud Observability and available in Log Explorer
+-- All application log data is streamed to Google Cloud Observability and available in Log Explorer.
