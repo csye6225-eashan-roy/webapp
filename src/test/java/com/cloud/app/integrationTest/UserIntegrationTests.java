@@ -1,5 +1,6 @@
 package com.cloud.app.integrationTest;
 
+import com.cloud.app.dao.UserDao;
 import com.cloud.app.entity.User;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.*;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -19,12 +22,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 //selects a random port to conduct actual http calls for testing
 @TestMethodOrder(OrderAnnotation.class)
 // This applies test method ordering for the whole class
-public class
-UserIntegrationTests {
+public class UserIntegrationTests {
 
     @Autowired
     private TestRestTemplate restTemplate;
     //will make actual HTTP calls as opposed to mockmvc which simulates them
+
+    @Autowired
+    private UserDao userDao;
 
     @LocalServerPort
     //this annotation is used to  inject the random port used at runtime into the port variable
@@ -50,6 +55,16 @@ UserIntegrationTests {
         ResponseEntity<User> postResponse = restTemplate.postForEntity(getRootUrl() + "/user", user, User.class);
         assertThat(postResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         User createdUser = postResponse.getBody();
+
+        // a7-start
+        // Directly setting the 'email_verified' column in database to 'true' after user creation
+        Optional<User> userOptional = userDao.findByUsername(createdUser.getUsername());
+        if (userOptional.isPresent()) {
+            User userToUpdate = userOptional.get();
+            userToUpdate.setEmailVerified(true); // Set email as verified
+            userDao.save(userToUpdate); // Save the updated user
+        }
+        // a7-end
 
         // Using username and password for basic auth
         restTemplate = restTemplate.withBasicAuth(user.getUsername(), "Password123!@");

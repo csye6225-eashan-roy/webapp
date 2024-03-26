@@ -98,4 +98,15 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage()); // 400 Bad Request
         }
     }
+
+    // a7-start
+    @GetMapping("/verify-email")
+    public ResponseEntity<?> verifyEmail(@RequestParam String token) {
+        if (userService.verifyUserEmail(token)) {
+            return ResponseEntity.ok().body("Email verified successfully.");
+        } else {
+            return ResponseEntity.badRequest().body("Invalid or expired email verification link.");
+        }
+    }
+    // a7-end
 }
