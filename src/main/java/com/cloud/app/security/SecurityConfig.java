@@ -38,6 +38,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 // Configure request authorization
                 .authorizeHttpRequests(authz -> authz
+                        // a7-start
+                        .requestMatchers("/v1/verify-email").permitAll() // Allow unauthenticated access to verify-email
+                        // a7-end
                         .requestMatchers("/v1/user/self").authenticated()
                         .anyRequest().permitAll()
                 )

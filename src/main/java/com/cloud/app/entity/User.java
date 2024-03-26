@@ -53,4 +53,16 @@ public class User {
     @Column(name = "account_updated")
     @JsonProperty("account_updated")
     private Instant accountUpdated;
+
+    // a7-start
+    //for email verification
+    @Column(name = "email_verification_token")
+    private String emailVerificationToken;
+
+    @Column(name = "email_verified")
+    private Boolean emailVerified = false;
+
+    @Column(name = "email_verification_token_expiry")
+    private Instant emailVerificationTokenExpiry;
+    //a7-end
 }
