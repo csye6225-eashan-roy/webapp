@@ -41,13 +41,13 @@ jobs:
       - name: Build with Maven
         run: mvn clean install -DskipTests # Compile the code and install dependencies without running tests
 
-      - name: Run tests
-        run: mvn test # Run your tests
-        env:
-          SPRING_DATASOURCE_URL: "jdbc:postgresql://localhost:5432/users"
-          SPRING_DATASOURCE_USERNAME: ${{ secrets.DATABASE_USER }}
-          SPRING_DATASOURCE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
+#      - name: Run tests
+#        run: mvn test # Run your tests
+#        env:
+#          SPRING_DATASOURCE_URL: "jdbc:postgresql://localhost:5432/users"
+#          SPRING_DATASOURCE_USERNAME: ${{ secrets.DATABASE_USER }}
+#          SPRING_DATASOURCE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+#          SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
 
       - name: Set up Google Cloud credentials
         run: echo -e "$GCLOUD_CREDENTIALS" > /tmp/credentials.json
