@@ -106,7 +106,7 @@ public class UserController {
         if (userService.verifyUserEmail(token)) {
             return ResponseEntity.ok().body("Email verified successfully.");
         } else {
-            return ResponseEntity.badRequest().body("Invalid or expired email verification link.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Email verification link has expired.");
         }
     }
     // a7-end

@@ -8,6 +8,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: /tmp/credentials.json
+
     steps:
       - name: Checkout the code
         uses: actions/checkout@v3
@@ -34,16 +37,27 @@ jobs:
           sudo chmod -R 777 /var/log/webapp
           sudo chmod 666 /var/log/webapp/webapp.log
 
+      - name: Set up Google Cloud credentials
+        run: echo -e "$GCLOUD_CREDENTIALS" > /tmp/credentials.json
+        env:
+          GCLOUD_CREDENTIALS: ${{ secrets.GCLOUD_CREDENTIALS }}
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCLOUD_CREDENTIALS }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
       - name: Build with Maven
         run: mvn clean install -DskipTests # Compile the code and install dependencies without running tests
 
-#      - name: Run tests
-#        run: mvn test # Run your tests
-#        env:
-#          SPRING_DATASOURCE_URL: "jdbc:postgresql://localhost:5432/users"
-#          SPRING_DATASOURCE_USERNAME: ${{ secrets.DATABASE_USER }}
-#          SPRING_DATASOURCE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-#          SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
+      - name: Run tests
+        run: mvn test # Run your tests
+        env:
+          SPRING_DATASOURCE_URL: "jdbc:postgresql://localhost:5432/users"
+          SPRING_DATASOURCE_USERNAME: ${{ secrets.DATABASE_USER }}
+          SPRING_DATASOURCE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
 
-#      - name: Build failure
-#        run: exit 1
+      - name: Build failure
+        run: exit 1
