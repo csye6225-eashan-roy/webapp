@@ -42,7 +42,7 @@ public class UserController {
             userDTO.setAccountCreated(user.getAccountCreated());
             userDTO.setAccountUpdated(user.getAccountUpdated());
             User createdUser = userService.createUser(userDTO.toEntity(), user.getPassword());
-            LOGGER.debug("User successfully created: {}", userDTO.getUsername());
+            LOGGER.info("User successfully created: {}", userDTO.getUsername());
             return ResponseEntity.status(HttpStatus.CREATED).body(UserDTO.fromEntity(createdUser));
 
         } catch (DataAccessResourceFailureException e){
@@ -102,6 +102,7 @@ public class UserController {
     // a7-start
     @GetMapping("/verify-email")
     public ResponseEntity<?> verifyEmail(@RequestParam String token) {
+        LOGGER.info("Request received to verify email id");
         if (userService.verifyUserEmail(token)) {
             return ResponseEntity.ok().body("Email verified successfully.");
         } else {
