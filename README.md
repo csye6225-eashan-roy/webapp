@@ -242,4 +242,29 @@ dig NS eashanroy.me
 
 -- Updated web application to write Structured Logs in JSON (used SLF4J with Logback)  
 -- Created logback config file to use this directory '/var/log/webapp/webapp.log' to write logs  
--- All application log data is streamed to Google Cloud Observability and available in Log Explorer.
+-- All application log data is streamed to Google Cloud Observability and available in Log Explorer.  
+
+### Assignment 7  
+
+Objective: When POST call is made to the web application to create a new user, the web application will publish a message to a Pub/Sub topic with the email id of the user. The Pub/Sub will trigger an associated CloudFunction which will use Mailgun's API to send an email verification link to the user. This link if clicked by the user within 2 minutes, the user's email will be verified, else not. All the subsequent GET/PUT calls will check if the user is a verified user or not. If yes, only then they will be able to make the API calls. 
+
+- Handled via Terraform (repo: 'tf-gcp-infra')  
+
+-- Provisioned Cloud Function, Pub/Sub, VPC Connector (for cloud function to interact with the Cloud SQL Postgres db), service account for the Cloud Function with necessary IAM role bindings  
+
+- Web Application Updates 
+
+-- Publishes a message to Pub/Sub topic when a new user account is created. The payload (message) is in JSON  
+-- Once the message is published to Pub/Sub and Cloud function is triggered and verification link is sent to user, and user clicks that link, a new REST API endpoint in the web application ('/verify') is hit which checks if the link is clicked by user within 2 minutes. If yes, then marks the user as 'verified'  
+-- All API calls from user account that has not been verified are blocked until the user completes the verification  
+
+- Serverless  
+
+-- Created new GitHub repo to store the serverless code of Cloud Function (used Java)  
+-- The Cloud Function will do the following:  
+
+1. Receive the base64 encoded message (containing email id of the user) from the Pub/Sub topic  
+2. Decode the message, deserialize it, insert a verification token in the cloudsql db associated with the email id of the user, and also add a timer of 2 minutes  
+3. Send mail to the user using mailgun's api that contains the verification url. When user clicks the link, it redirects them to the '/verify' endpoint of the web application   
+
+
