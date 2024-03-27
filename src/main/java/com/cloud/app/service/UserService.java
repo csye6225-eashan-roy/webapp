@@ -61,8 +61,8 @@ public class UserService {
         // a7-start
         // Sets email verification fields
         user.setEmailVerified(false);
-        user.setEmailVerificationToken(UUID.randomUUID().toString());
-        user.setEmailVerificationTokenExpiry(Instant.now().plus(Duration.ofMinutes(2)));
+//        user.setEmailVerificationToken(UUID.randomUUID().toString());
+//        user.setEmailVerificationTokenExpiry(Instant.now().plus(Duration.ofMinutes(2)));
         User savedUser = userDao.save(user);
         LOGGER.info("User successfully created with username: {}", user.getUsername());
 
@@ -70,8 +70,7 @@ public class UserService {
         try {
             LOGGER.debug("Proceeding to publish user info to pub/sub for user: {}", savedUser.getUsername());
             String payload = objectMapper.writeValueAsString(new VerificationPayload(
-                    savedUser.getUsername(),
-                    savedUser.getEmailVerificationToken()
+                    savedUser.getUsername()
             ));
             pubSubTemplate.publish("verify_email", payload);
             LOGGER.info("Published verification message to topic: verify_email for user: {}", savedUser.getUsername());
@@ -86,7 +85,7 @@ public class UserService {
     @AllArgsConstructor
     private static class VerificationPayload {
         private String username;
-        private String verificationToken;
+//        private String verificationToken;
     }
     // a7-end
     // a7-start
@@ -126,7 +125,6 @@ public class UserService {
         // a7-start
         // Check if user's email is verified before allowing update
         if (!Boolean.TRUE.equals(existingUser.getEmailVerified())) {
-            LOGGER.warn("Attempted to update user information for unverified email: {}", username);
             throw new EmailNotVerifiedException("Email not verified for username: " + username);
         }
         // a7-end
