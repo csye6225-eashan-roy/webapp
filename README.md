@@ -267,4 +267,6 @@ Objective: When POST call is made to the web application to create a new user, t
 2. Decode the message, deserialize it, insert a verification token in the cloudsql db associated with the email id of the user, and also add a timer of 2 minutes  
 3. Send mail to the user using mailgun's api that contains the verification url. When user clicks the link, it redirects them to the '/verify' endpoint of the web application   
 
+### Assignment 8
+
 
