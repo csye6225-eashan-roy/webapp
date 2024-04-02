@@ -179,7 +179,7 @@ Responses:
 -- Shell provisioner to move systemd service file to /etc/systemd/system/webapp.service, and start the service
 
 
-- Created Service Account in GCP for GitHub actions to deploy Packer image  
+- Created Service Account in GCP for GitHub actions to deploy Packer image [added this service account credentials as GitHub organization repository secret, and used them in the github actions workflow so that Github actions can use it to deploy packer image to GCP]
 
 
 - Added new GitHub Actions workflow for status check (gets triggered on raising a PR from fork/feature to org/main)  
@@ -267,6 +267,8 @@ Objective: When POST call is made to the web application to create a new user, t
 2. Decode the message, deserialize it, insert a verification token in the cloudsql db associated with the email id of the user, and also add a timer of 2 minutes  
 3. Send mail to the user using mailgun's api that contains the verification url. When user clicks the link, it redirects them to the '/verify' endpoint of the web application   
 
-### Assignment 8
+### Assignment 8  
+
+- Setup Autoscaling and Application Load balancer for the web application
 
 
