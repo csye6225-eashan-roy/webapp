@@ -42,7 +42,7 @@ public class UserController {
             userDTO.setAccountCreated(user.getAccountCreated());
             userDTO.setAccountUpdated(user.getAccountUpdated());
             User createdUser = userService.createUser(userDTO.toEntity(), user.getPassword());
-            LOGGER.info("User successfully created: {}", userDTO.getUsername());
+//            LOGGER.info("User successfully created: {}", userDTO.getUsername());
             return ResponseEntity.status(HttpStatus.CREATED).body(UserDTO.fromEntity(createdUser));
 
         } catch (DataAccessResourceFailureException e){
@@ -87,16 +87,9 @@ public class UserController {
     @PutMapping("/user/self")
     public ResponseEntity<?> updateUserInformation(@AuthenticationPrincipal UserDetails currentUser, @Validated @RequestBody User user) {
         LOGGER.info("Request received to update user info for: {}", currentUser.getUsername());
-        try {
-            LOGGER.debug("Proceeding to update user info...");
-            User updatedUser = userService.updateUser(currentUser.getUsername(), user);
-            LOGGER.info("User information successfully updated for: {}", currentUser.getUsername());
-            return ResponseEntity.noContent().build(); // 204 No Content
-
-        } catch (Exception e) {
-            LOGGER.error("Error updating user '{}': {}", currentUser.getUsername(), e.getMessage());
-            return ResponseEntity.badRequest().body(e.getMessage()); // 400 Bad Request
-        }
+        User updatedUser = userService.updateUser(currentUser.getUsername(), user);
+        LOGGER.info("User information successfully updated for: {}", currentUser.getUsername());
+        return ResponseEntity.noContent().build(); // 204 No Content
     }
 
     // a7-start
