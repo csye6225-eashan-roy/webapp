@@ -161,6 +161,6 @@ jobs:
         run: |
           gcloud compute instance-groups managed wait-until --stable ${{ secrets.MIG_NAME }} \
             --region=us-central1 \
-            --timeout=600
+            --timeout=900
 
          
