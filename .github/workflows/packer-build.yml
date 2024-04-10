@@ -87,7 +87,7 @@ jobs:
 #            -var "database_password=${{ secrets.DATABASE_PASSWORD }}" \
 #            packer/template/webapp-gcp-custom-image.pkr.hcl
 
-#      _________________________________________________
+#      ______________________________________________________
 
 #      Continuous Deployment
   update-instance-group:
