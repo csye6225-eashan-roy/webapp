@@ -150,7 +150,7 @@ jobs:
 
       - name: Start Rolling Update on Managed Instance Group
         run: |
-          gcloud beta compute instance-groups managed rolling-action start-update ${{ secrets.MIG_NAME }} \
+          gcloud compute instance-groups managed rolling-action start-update ${{ secrets.MIG_NAME }} \
             --region=us-central1 \
             --type=proactive \
             --min-ready=2m \
