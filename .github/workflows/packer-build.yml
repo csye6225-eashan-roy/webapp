@@ -123,10 +123,12 @@ jobs:
           
       - name: Create a new instance template
         run: |
+          SUBNET_URL=$(gcloud compute networks subnets list --filter="name=${{ secrets.SUBNET }}" --project=${{ secrets.GCP_PROJECT_ID }} --regions=us-central1 --format="value(selfLink)")
+          echo "Using subnet: $SUBNET_URL"
           gcloud compute instance-templates create ${{ secrets.INSTANCE_TEMPLATE_NAME }} \
             --project=${{ secrets.GCP_PROJECT_ID }} \
             --machine-type=e2-medium \
-            --network-interface="subnet=${{ secrets.SUBNET }}" \
+            --network-interface=subnet="$SUBNET_URL" \
             --metadata=db_host=${{ secrets.DB_HOST }},db_name=${{ secrets.DB_NAME }},db_password='${{ secrets.DB_PASSWORD }}',db_user=${{ secrets.DB_USER }} \
             --metadata-from-file startup-script=${{ secrets.STARTUP_SCRIPT }} \
             --can-ip-forward \
