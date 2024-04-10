@@ -113,7 +113,7 @@ jobs:
         run: |
           LATEST_IMAGE_ID=$(gcloud compute images list \
               --project=${{ secrets.GCP_PROJECT_ID }} \
-              --filter="family:custom-centos-stream-webapp" \
+              --filter="family:custom-centos-8-image-webapp" \
               --format="csv[no-heading](name,creationTimestamp)" \
               | sort -t, -k2,2r \
               | head -n 1 \
