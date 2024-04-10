@@ -154,7 +154,7 @@ jobs:
             --region=us-central1 \
             --type=proactive \
             --version=template=${{ secrets.INSTANCE_TEMPLATE_NAME }} \
-            --max-unavailable=1 \
+            --max-unavailable=3 \
             --max-surge=3 \
 
       - name: Wait for the update to complete
