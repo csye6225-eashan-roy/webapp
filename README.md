@@ -269,6 +269,15 @@ Objective: When POST call is made to the web application to create a new user, t
 
 ### Assignment 8  
 
-- Setup Autoscaling and Application Load balancer for the web application
+- Setup Autoscaling and Application Load balancer for the web application  
+
+### Assignment 9  
+
+Updated the Packer build workflow to include these steps:  
+
+- Created a new Instance Template version with the latest machine image id for the managed instance group.  
+- Configured the managed instance group to use this new template using gcloud cli.  
+- Issued command to the managed instance group to start a basic rolling update using gcloud cli.  
+- GitHub Actions workflow waits for managed instance group refresh to complete before exiting. The status of GitHub Actions workflow matches the status of instance refresh command.
 
 
