@@ -100,7 +100,7 @@ jobs:
             --provisioning-model=STANDARD \
             --service-account=${{ secrets.GCP_VM_SERVICE_ACCOUNT_EMAIL }} \
             --scopes=https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/pubsub,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write \
-            --region=${{ secrets.REGION }} \
+            --region=us-central1 \
             --tags=allow-https-to-vm-from-alb-tag,allow-8081-to-vm-from-alb-tag,allow-http-to-vm-from-alb-tag \
             --create-disk=auto-delete=yes,boot=yes,image=projects/${{ secrets.GCP_PROJECT_ID }}/global/images/${{ env.image_name }},kms-key=projects/${{ secrets.GCP_PROJECT_ID }}/locations/${{ secrets.REGION }}/keyRings/${{ secrets.KEY_RING }}/cryptoKeys/${{ secrets.KEY_NAME }},mode=rw,size=20,type=pd-balanced \
             --no-shielded-secure-boot \
