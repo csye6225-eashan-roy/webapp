@@ -83,9 +83,10 @@ jobs:
             -var "database_user=${{ secrets.DATABASE_USER }}" \
             -var "database_password=${{ secrets.DATABASE_PASSWORD }}" \
             packer/template/webapp-gcp-custom-image.pkr.hcl)
+          echo "Packer Build Output:"
           echo "$PACKER_OUTPUT"
           IMAGE_NAME=$(echo "$PACKER_OUTPUT" | grep -oP 'A disk image was created: \K[^ ]+' | tail -1)
-          echo "::set-output name=image_name::$IMAGE_NAME"
+          echo "image_name=$IMAGE_NAME" >> $GITHUB_ENV
           
       - name: Create instance template with gcloud
         run: |
@@ -101,7 +102,7 @@ jobs:
             --scopes=https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/pubsub,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write \
             --region=${{ secrets.REGION }} \
             --tags=allow-https-to-vm-from-alb-tag,allow-8081-to-vm-from-alb-tag,allow-http-to-vm-from-alb-tag \
-            --create-disk=auto-delete=yes,boot=yes,image=projects/${{ secrets.GCP_PROJECT_ID }}/global/images/${{ steps.packer_build.outputs.image_name }},kms-key=projects/${{ secrets.GCP_PROJECT_ID }}/locations/${{ secrets.REGION }}/keyRings/${{ secrets.KEY_RING }}/cryptoKeys/${{ secrets.KEY_NAME }},mode=rw,size=20,type=pd-balanced \
+            --create-disk=auto-delete=yes,boot=yes,image=projects/${{ secrets.GCP_PROJECT_ID }}/global/images/${{ env.image_name }},kms-key=projects/${{ secrets.GCP_PROJECT_ID }}/locations/${{ secrets.REGION }}/keyRings/${{ secrets.KEY_RING }}/cryptoKeys/${{ secrets.KEY_NAME }},mode=rw,size=20,type=pd-balanced \
             --no-shielded-secure-boot \
             --shielded-vtpm \
             --shielded-integrity-monitoring \
