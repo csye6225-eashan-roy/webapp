@@ -69,8 +69,9 @@ jobs:
         run: packer init packer/template/webapp-gcp-custom-image.pkr.hcl
 
       - name: Build Custom Image with Packer
+        id: packer_build
         run: |
-          packer build \
+          PACKER_OUTPUT=$(packer build \
             -var "jar_file=target/app-0.0.1-SNAPSHOT.jar" \
             -var "project_id=${{ secrets.GCP_PROJECT_ID }}" \
             -var "zone=us-central1-a" \
@@ -81,4 +82,48 @@ jobs:
             -var "vm_size=e2-small" \
             -var "database_user=${{ secrets.DATABASE_USER }}" \
             -var "database_password=${{ secrets.DATABASE_PASSWORD }}" \
-            packer/template/webapp-gcp-custom-image.pkr.hcl
+            packer/template/webapp-gcp-custom-image.pkr.hcl)
+          echo "$PACKER_OUTPUT"
+          IMAGE_NAME=$(echo "$PACKER_OUTPUT" | grep -oP 'A disk image was created: \K[^ ]+' | tail -1)
+          echo "::set-output name=image_name::$IMAGE_NAME"
+          
+      - name: Create instance template with gcloud
+        run: |
+          gcloud compute instance-templates create ${{ secrets.INSTANCE_TEMPLATE_NAME }} \
+            --project=${{ secrets.GCP_PROJECT_ID }} \
+            --machine-type=e2-medium \
+            --network-interface=network-tier=PREMIUM,subnet=${{ secrets.SUBNET }} \
+            --metadata=db_host=${{ secrets.DB_HOST }},db_name=${{ secrets.DB_NAME }},db_password=${{ secrets.DB_PASSWORD }},db_user=${{ secrets.DB_USER }},startup-script=${{ secrets.STARTUP_SCRIPT }} \
+            --can-ip-forward \
+            --maintenance-policy=MIGRATE \
+            --provisioning-model=STANDARD \
+            --service-account=${{ secrets.GCP_VM_SERVICE_ACCOUNT_EMAIL }} \
+            --scopes=https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/pubsub,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write \
+            --region=${{ secrets.REGION }} \
+            --tags=allow-https-to-vm-from-alb-tag,allow-8081-to-vm-from-alb-tag,allow-http-to-vm-from-alb-tag \
+            --create-disk=auto-delete=yes,boot=yes,image=projects/${{ secrets.GCP_PROJECT_ID }}/global/images/${{ steps.packer_build.outputs.image_name }},kms-key=projects/${{ secrets.GCP_PROJECT_ID }}/locations/${{ secrets.REGION }}/keyRings/${{ secrets.KEY_RING }}/cryptoKeys/${{ secrets.KEY_NAME }},mode=rw,size=20,type=pd-balanced \
+            --no-shielded-secure-boot \
+            --shielded-vtpm \
+            --shielded-integrity-monitoring \
+            --reservation-affinity=any
+
+      - name: Update Managed Instance Group with new template
+        run: |
+          gcloud compute instance-groups managed set-instance-template ${{ secrets.MIG_NAME }} \
+            --template=${{ secrets.INSTANCE_TEMPLATE_NAME }} \
+            --region=${{ secrets.REGION }}
+
+      - name: Start Rolling Update on Managed Instance Group
+        run: |
+          gcloud beta compute instance-groups managed rolling-action start-update ${{ secrets.MIG_NAME }} \
+            --version template=${{ secrets.INSTANCE_TEMPLATE_NAME }} \
+            --type=proactive \
+            --min-ready=2m \
+            --max-unavailable=1 \
+            --max-surge=3 \
+            --region=${{ secrets.REGION }}
+        env:
+          GCP_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
+
+
+         
