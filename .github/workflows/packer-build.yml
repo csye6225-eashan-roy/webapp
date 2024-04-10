@@ -1,42 +1,101 @@
 name: CI for building image
 
+#on:
+#  push:
+#    branches:
+#      - main
+
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    branches: [main]
 
 jobs:
-  packer_build_image:
-    runs-on: ubuntu-latest
+#  packer_build_image:
+#    runs-on: ubuntu-latest
+#
+#    env:
+#      GOOGLE_APPLICATION_CREDENTIALS: /tmp/credentials.json
+#
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v2
+#
+#      - name: Set up JDK 17
+#        uses: actions/setup-java@v2
+#        with:
+#          java-version: '17'
+#          distribution: 'temurin'
+#
+#      - name: Install PostgreSQL
+#        run: |
+#          sudo apt-get update
+#          sudo apt-get install -y postgresql postgresql-contrib
+#          sudo systemctl start postgresql.service
+#          sudo -u postgres psql -c "CREATE DATABASE users;"
+#          sudo -u postgres psql -c "CREATE USER ${{ secrets.DATABASE_USER }} WITH ENCRYPTED PASSWORD '${{ secrets.DATABASE_PASSWORD }}';"
+#          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE users TO ${{ secrets.DATABASE_USER }};"
+#
+#      - name: Create log directory
+#        run: |
+#          sudo mkdir -p /var/log/webapp
+#          sudo touch /var/log/webapp/webapp.log
+#          sudo chmod -R 777 /var/log/webapp
+#          sudo chmod 666 /var/log/webapp/webapp.log
+#
+#      - name: Set up Google Cloud credentials
+#        run: echo -e "$GCLOUD_CREDENTIALS" > /tmp/credentials.json
+#        env:
+#          GCLOUD_CREDENTIALS: ${{ secrets.GCLOUD_CREDENTIALS }}
+#
+#      - name: Set up Google Cloud SDK
+#        uses: google-github-actions/auth@v2
+#        with:
+#          credentials_json: ${{ secrets.GCLOUD_CREDENTIALS }}
+#          project_id: ${{ secrets.GCP_PROJECT_ID }}
+#
+#      - name: Build with Maven
+#        run: mvn clean install -DskipTests # Compile the code and install dependencies without running tests
+#
+#      - name: Run tests
+#        run: mvn test # Run your tests
+#        env:
+#          SPRING_DATASOURCE_URL: "jdbc:postgresql://localhost:5432/users"
+#          SPRING_DATASOURCE_USERNAME: ${{ secrets.DATABASE_USER }}
+#          SPRING_DATASOURCE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+#          SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
+#
+#      - name: Set up Packer
+#        uses: hashicorp/setup-packer@main
+#        with:
+#          version: latest
+#
+#      - name: Initialize Packer
+#        run: packer init packer/template/webapp-gcp-custom-image.pkr.hcl
+#
+#      - name: Build Custom Image with Packer
+#        run: |
+#          packer build \
+#            -var "jar_file=target/app-0.0.1-SNAPSHOT.jar" \
+#            -var "project_id=${{ secrets.GCP_PROJECT_ID }}" \
+#            -var "zone=us-central1-a" \
+#            -var "vpc_network=default" \
+#            -var "source_image_family=centos-stream-8" \
+#            -var "image_family=custom-centos-8-image-webapp" \
+#            -var "ssh_username=packer" \
+#            -var "vm_size=e2-small" \
+#            -var "database_user=${{ secrets.DATABASE_USER }}" \
+#            -var "database_password=${{ secrets.DATABASE_PASSWORD }}" \
+#            packer/template/webapp-gcp-custom-image.pkr.hcl
 
-    env:
-      GOOGLE_APPLICATION_CREDENTIALS: /tmp/credentials.json
+#      _________________________________________________
+
+#      Continuous Deployment
+  update-instance-group:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v2
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Install PostgreSQL
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y postgresql postgresql-contrib
-          sudo systemctl start postgresql.service
-          sudo -u postgres psql -c "CREATE DATABASE users;"
-          sudo -u postgres psql -c "CREATE USER ${{ secrets.DATABASE_USER }} WITH ENCRYPTED PASSWORD '${{ secrets.DATABASE_PASSWORD }}';"
-          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE users TO ${{ secrets.DATABASE_USER }};"
-
-      - name: Create log directory
-        run: |
-          sudo mkdir -p /var/log/webapp
-          sudo touch /var/log/webapp/webapp.log
-          sudo chmod -R 777 /var/log/webapp
-          sudo chmod 666 /var/log/webapp/webapp.log
 
       - name: Set up Google Cloud credentials
         run: echo -e "$GCLOUD_CREDENTIALS" > /tmp/credentials.json
@@ -49,49 +108,11 @@ jobs:
           credentials_json: ${{ secrets.GCLOUD_CREDENTIALS }}
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-      - name: Build with Maven
-        run: mvn clean install -DskipTests # Compile the code and install dependencies without running tests
-
-      - name: Run tests
-        run: mvn test # Run your tests
-        env:
-          SPRING_DATASOURCE_URL: "jdbc:postgresql://localhost:5432/users"
-          SPRING_DATASOURCE_USERNAME: ${{ secrets.DATABASE_USER }}
-          SPRING_DATASOURCE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
-
-      - name: Set up Packer
-        uses: hashicorp/setup-packer@main
-        with:
-          version: latest
-
-      - name: Initialize Packer
-        run: packer init packer/template/webapp-gcp-custom-image.pkr.hcl
-
-      - name: Build Custom Image with Packer
-        run: |
-          packer build \
-            -var "jar_file=target/app-0.0.1-SNAPSHOT.jar" \
-            -var "project_id=${{ secrets.GCP_PROJECT_ID }}" \
-            -var "zone=us-central1-a" \
-            -var "vpc_network=default" \
-            -var "source_image_family=centos-stream-8" \
-            -var "image_family=custom-centos-8-image-webapp" \
-            -var "ssh_username=packer" \
-            -var "vm_size=e2-small" \
-            -var "database_user=${{ secrets.DATABASE_USER }}" \
-            -var "database_password=${{ secrets.DATABASE_PASSWORD }}" \
-            packer/template/webapp-gcp-custom-image.pkr.hcl
-
-#      _________________________________________________
-
-#      Continuous Deployment
-
       - name: Fetch latest packer image
         id: fetch-latest-image
         run: |
           LATEST_IMAGE_ID=$(gcloud compute images list \
-              --project=${{ env.PROJECT_ID }} \
+              --project=${{ secrets.GCP_PROJECT_ID }} \
               --filter="family:custom-centos-stream-webapp" \
               --format="csv[no-heading](name,creationTimestamp)" \
               | sort -t, -k2,2r \
