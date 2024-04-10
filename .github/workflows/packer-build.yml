@@ -90,23 +90,23 @@ jobs:
 #      ______________________________________________________
 
 #      Continuous Deployment
-  update-instance-group:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Google Cloud credentials
-        run: echo -e "$GCLOUD_CREDENTIALS" > /tmp/credentials.json
-        env:
-          GCLOUD_CREDENTIALS: ${{ secrets.GCLOUD_CREDENTIALS }}
-
-      - name: Set up Google Cloud SDK
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.GCLOUD_CREDENTIALS }}
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
+#  update-instance-group:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v2
+#
+#      - name: Set up Google Cloud credentials
+#        run: echo -e "$GCLOUD_CREDENTIALS" > /tmp/credentials.json
+#        env:
+#          GCLOUD_CREDENTIALS: ${{ secrets.GCLOUD_CREDENTIALS }}
+#
+#      - name: Set up Google Cloud SDK
+#        uses: google-github-actions/auth@v2
+#        with:
+#          credentials_json: ${{ secrets.GCLOUD_CREDENTIALS }}
+#          project_id: ${{ secrets.GCP_PROJECT_ID }}
 
       - name: Fetch latest packer image
         id: fetch-latest-image
