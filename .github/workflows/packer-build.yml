@@ -153,6 +153,7 @@ jobs:
           gcloud compute instance-groups managed rolling-action start-update ${{ secrets.MIG_NAME }} \
             --region=us-central1 \
             --type=proactive \
+            --version=template=${{ secrets.INSTANCE_TEMPLATE_NAME }} \
             --max-unavailable=1 \
             --max-surge=3 \
 
