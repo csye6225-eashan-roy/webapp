@@ -130,7 +130,7 @@ jobs:
             --machine-type=e2-medium \
             --network-interface=subnet="$SUBNET_URL" \
             --metadata=db_host=${{ secrets.DB_HOST }},db_name=${{ secrets.DB_NAME }},db_password='${{ secrets.DB_PASSWORD }}',db_user=${{ secrets.DB_USER }} \
-            --metadata-from-file startup-script=${{ secrets.STARTUP_SCRIPT }} \
+            --metadata-from-file startup-script=packer/scripts/startup-script-instance-template.sh \
             --can-ip-forward \
             --maintenance-policy=MIGRATE \
             --provisioning-model=STANDARD \
