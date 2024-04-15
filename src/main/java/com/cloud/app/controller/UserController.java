@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v7")
 public class UserController {
 
     @Autowired

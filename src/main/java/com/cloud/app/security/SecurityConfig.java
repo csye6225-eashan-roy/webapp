@@ -39,9 +39,9 @@ public class SecurityConfig {
                 // Configure request authorization
                 .authorizeHttpRequests(authz -> authz
                         // a7-start
-                        .requestMatchers("/v1/verify-email").permitAll() // Allow unauthenticated access to verify-email
+                        .requestMatchers("/v7/verify-email").permitAll() // Allow unauthenticated access to verify-email
                         // a7-end
-                        .requestMatchers("/v1/user/self").authenticated()
+                        .requestMatchers("/v7/user/self").authenticated()
                         .anyRequest().permitAll()
                 )
                 // Configure HTTP Basic authentication

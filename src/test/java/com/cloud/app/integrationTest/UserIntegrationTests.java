@@ -37,7 +37,7 @@ public class UserIntegrationTests {
     private String baseUrl;
 
     public String getRootUrl() {
-        return "http://localhost:" + port + "/v1";
+        return "http://localhost:" + port + "/v7";
     }
 
     @Test
