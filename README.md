@@ -48,10 +48,8 @@ Notes:
 
 ### Assignment 2  
 
-- Bootstrapping the Database  
-
--- Automated Database Setup: Leveraging the **CommandLineRunner** interface, our application is equipped to automatically establish a database along with a designated user endowed with the necessary privileges. This setup ensures that, in the event of an unexpected deletion, the database is seamlessly regenerated without manual intervention.  
-
+- Bootstrapping the Database
+  
 -- Schema Management: Our use of JPA entity classes, in combination with Spring Data JPA repositories, facilitates the auto-generation of database tables. This negates the need for manual SQL query execution to restore tables should they be dropped.  
 
 - REST APIs  
